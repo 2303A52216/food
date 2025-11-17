@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Food Delivery App</title>
+<style>
+ body { font-family: Arial, sans-serif; margin: 0; background: #f8f8f8; }
+ header { background: #ff4d4d; padding: 15px; color: #fff; text-align: center; font-size: 22px; }
+ .container { padding: 20px; }
+ .card { background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+ button { background: #ff4d4d; color: #fff; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+ button:hover { opacity: 0.8; }
+ .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>Food Delivery App</header>
+<div class="container">
+
+<!-- USER MODULE -->
+<div id="userModule" class="card">
+<h2>User Login / Register</h2>
+<input id="username" placeholder="Enter Username" /><br><br>
+<button onclick="loginUser()">Login</button>
+</div>
+
+<!-- RESTAURANT MODULE -->
+<div id="restaurantModule" class="card hidden">
+<h2>Restaurants</h2>
+<button onclick="showMenu('KFC')">KFC</button>
+<button onclick="showMenu('Dominos')">Dominos</button>
+</div>
+
+<!-- MENU MODULE -->
+<div id="menuModule" class="card hidden">
+<h2 id="menuTitle"></h2>
+<button onclick="addToCart('Burger',150)">Burger - ₹150</button><br><br>
+<button onclick="addToCart('Pizza',250)">Pizza - ₹250</button><br><br>
+<button onclick="proceedToOrder()">Proceed to Order</button>
+</div>
+
+<!-- ORDER MODULE -->
+<div id="orderModule" class="card hidden">
+<h2>Your Order</h2>
+<p id="orderList"></p>
+<p><strong>Total: ₹<span id="totalAmount">0</span></strong></p>
+<button onclick="goToPayment()">Go to Payment</button>
+</div>
+
+<!-- PAYMENT MODULE (Updated) -->
+<div id="paymentModule" class="card hidden">
+<h2>Payment</h2>
+<p><strong>Select Payment Method:</strong></p>
+
+<label style="font-size:18px;">
+ <input type="radio" name="pay" value="UPI"> UPI
+</label><br><br>
+
+<label style="font-size:18px;">
+ <input type="radio" name="pay" value="Card"> Card
+</label><br><br>
+
+<label style="font-size:18px;">
+ <input type="radio" name="pay" value="Wallet"> Wallet
+</label><br><br>
+
+<button style="font-size:18px; padding:12px 20px;" onclick="makePayment()">Pay Now</button>
+</div>
+
+<!-- DELIVERY MODULE (Updated) -->
+<div id="deliveryModule" class="card hidden">
+<h2>Delivery Tracking</h2>
+<p id="deliveryStatus" style="font-size:18px; font-weight:bold;">
+ Assigning delivery partner...
+</p>
+</div>
+
+</div>
+
+<script>
+let cart = [];
+let total = 0;
+
+function loginUser() {
+ document.getElementById('userModule').classList.add('hidden');
+ document.getElementById('restaurantModule').classList.remove('hidden');
+}
+
+function showMenu(name) {
+ document.getElementById('menuTitle').innerText = name + " Menu";
+ document.getElementById('restaurantModule').classList.add('hidden');
+ document.getElementById('menuModule').classList.remove('hidden');
+}
+
+function addToCart(item, price) {
+ cart.push({ item, price });
+ total += price;
+ alert(item + " added to cart");
+}
+
+function proceedToOrder() {
+ document.getElementById('menuModule').classList.add('hidden');
+ document.getElementById('orderModule').classList.remove('hidden');
+
+ let list = "";
+ cart.forEach(c => list += c.item + " - ₹" + c.price + "<br>");
+ document.getElementById('orderList').innerHTML = list;
+ document.getElementById('totalAmount').innerText = total;
+}
+
+function goToPayment() {
+ document.getElementById('orderModule').classList.add('hidden');
+ document.getElementById('paymentModule').classList.remove('hidden');
+}
+
+function makePayment() {
+ document.getElementById('paymentModule').classList.add('hidden');
+ document.getElementById('deliveryModule').classList.remove('hidden');
+ simulateDelivery();
+}
+
+function simulateDelivery() {
+ let status = document.getElementById('deliveryStatus');
+
+ setTimeout(() => status.innerText = "Order Accepted", 1000);
+ setTimeout(() => status.innerText = "Food is Being Prepared", 3000);
+ setTimeout(() => status.innerText = "Out for Delivery", 6000);
+ setTimeout(() => status.innerText = "Delivered ✔", 9000);
+}
+</script>
+
+</body>
+</html>
